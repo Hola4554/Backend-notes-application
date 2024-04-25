@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
 import { NotesService } from "./notes.service";
 import { CreateNoteDto } from "./dtos/create-notes.dto";
 import { UpdateNoteDto } from "./dtos/create-notes-update.dto";
@@ -22,6 +22,11 @@ export class NotesController{
     @Put('update/:id')
     async updateNote ( @Param('id') id: string, @Body() note : UpdateNoteDto ) {
         return this.notesService.updateNote( id, note);
+    }
+
+    @Delete('/:id')
+    async deleteNote ( @Param('id') id: string ){
+        return this.notesService.deleteNote( id );
     }
 
 }

@@ -25,4 +25,8 @@ export class NotesService{
         
     }
 
+    async deleteNote ( id:string ){
+        return this.noteModel.findByIdAndDelete(id);
+    }
+
 }
