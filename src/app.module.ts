@@ -2,12 +2,28 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
+import { enviroments } from './enviroments';
+import config from './config';
+import * as Joi from 'joi';
+import { NoteModule } from './notes/notes.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.CONECTION_DB)
+    ConfigModule.forRoot({
+      envFilePath:enviroments[process.env.NODE_ENV] || '.env',
+      load:[config],
+      isGlobal:true,
+      validationSchema: Joi.object({
+        CONECTION_DB: Joi.string().required()
+      })
+    }),
+    MongooseModule.forRoot(process.env.CONECTION_DB),
+    NoteModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(){}
+}
